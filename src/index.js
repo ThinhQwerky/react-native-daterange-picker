@@ -47,6 +47,8 @@ const DateRangePicker = ({
   buttonTextStyle,
   presetButtons,
   open,
+  onBackdropPress,
+  selectedDayStyle,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [weeks, setWeeks] = useState([]);
@@ -82,6 +84,7 @@ const DateRangePicker = ({
       ...styles.monthButtons,
       ...monthButtonsStyle,
     },
+    
   };
 
   const _onOpen = () => {
@@ -248,9 +251,11 @@ const DateRangePicker = ({
         let _date = _moment(displayedDate).set("date", i);
         let _selected = selected(_date, startDate, endDate, date);
         let _disabled = disabled(_date, minDate, maxDate);
+
         week.push(
           <Day
             key={`day-${i}`}
+            isSelectedDay={_date.isSame(startDate) || _date.isSame(endDate)}
             selectedStyle={selectedStyle}
             selectedTextStyle={selectedTextStyle}
             disabledStyle={disabledStyle}
@@ -261,6 +266,7 @@ const DateRangePicker = ({
             selected={_selected}
             disabled={_disabled}
             select={select}
+            selectedDayStyle={selectedDayStyle}
           />
         );
         if ((i + offset) % 7 === 0 || i === daysInMonth) {
@@ -328,7 +334,14 @@ const DateRangePicker = ({
       <View style={mergedStyles.backdrop}>
         <TouchableWithoutFeedback
           style={styles.closeTrigger}
-          onPress={_onClose}
+          onPress={() => { 
+            _onClose()
+            
+            if(onBackdropPress) {
+              console.log("onPress ")
+              onBackdropPress()
+            }
+        }}
         >
           <View style={styles.closeContainer} />
         </TouchableWithoutFeedback>
@@ -345,9 +358,9 @@ const DateRangePicker = ({
                 )}
               </TouchableOpacity>
               <Text style={mergedStyles.headerText}>
-                {displayedDate.format("MMMM") +
-                  " " +
-                  displayedDate.format("YYYY")}
+                {displayedDate.format("YYYY") +
+                  "년 " +
+                  displayedDate.format("MMMM")}
               </Text>
               <TouchableOpacity onPress={nextMonth}>
                 {monthNextButton || (
