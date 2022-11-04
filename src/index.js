@@ -49,6 +49,8 @@ const DateRangePicker = ({
   open,
   onBackdropPress,
   selectedDayStyle,
+  onResetPress,
+  onConfirmPress,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [weeks, setWeeks] = useState([]);
@@ -338,7 +340,6 @@ const DateRangePicker = ({
             _onClose()
             
             if(onBackdropPress) {
-              console.log("onPress ")
               onBackdropPress()
             }
         }}
@@ -407,8 +408,51 @@ const DateRangePicker = ({
                 )}
               </View>
             )}
+            <View style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              paddingHorizontal: 24,
+              paddingBottom: 24,
+              marginTop: -10,
+              }}
+              >
+            {!!onResetPress && (
+              <TouchableOpacity style={{
+                width: (width * 0.85 - 72) / 2,
+                height: 45,
+                borderRadius: 32, 
+                borderWidth: StyleSheet.hairlineWidth, 
+                borderColor: 'red', 
+                justifyContent: 'center',
+                backgroundColor: 'white',
+                alignItems: "center",
+                }}
+                onPress={onResetPress}
+              >
+                <Text style={{color: 'red'}}>선택 해제</Text>
+              </TouchableOpacity>
+            )}
+            {!!onConfirmPress && (
+              <TouchableOpacity style={{
+                width: (width * 0.85 - 72) /2,
+                height: 45,
+                borderRadius: 32, 
+                borderWidth: StyleSheet.hairlineWidth, 
+                justifyContent: 'center',
+                backgroundColor: '#323F4B',
+                alignItems: "center",
+                }}
+                onPress={onConfirmPress}
+              >
+                <Text style={{color: 'white'}}>확인</Text>
+              </TouchableOpacity>
+            )}
           </View>
+          </View>
+          
+          
         </View>
+        
       </View>
       {node}
     </>
